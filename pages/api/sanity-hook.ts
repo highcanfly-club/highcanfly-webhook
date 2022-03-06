@@ -21,19 +21,17 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     return;
   }
   //compatibility between v1 and v2 webhook
-  let ids = {created: [], updated: [], deleted: []};
+  let _ids = [];
   if (req.body.ids === undefined){
-      ids.created.push(req.body._id);
-  }else{
-    ids = req.body.ids;
+      _ids.push(req.body._id);
   }
 
   console.log(`INCOMING_REQUEST:${JSON.stringify(req.body)}`);
   const sanityAlgolia = algoliaIndexer;
 
   return sanityAlgolia
-    .webhookSync(client, {ids: ids})
-    .then(() => res.status(200).send(`ok, created[].length=${ids.created.length}, updated[].length=${ids.updated.length}, deleted[].length=${ids.deleted.length}, ids=${JSON.stringify(ids)}`));
+    .webhookSync(client, (req.body.ids === undefined) ? { ids: { created: _ids, updated: [], deleted: [] }} : req.body)
+    .then(() => res.status(200).send(`ok`));
 };
 
 export default handler;

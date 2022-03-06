@@ -97,16 +97,19 @@ const indexer = (
       for (const type in typeIndexMap) {
         await typeIndexMap[type].index.saveObjects(
           recordsToSave.filter((r) => r.type === type)
-        )
+        ).then(({ objectIDs }) => {
+          console.log(objectIDs);
+        });
       }
     }
 
-    /*
+   /*
      * Optimalization: We can check the history of the deleted document(s) with
      * history API to see if they were of a type that we have probably indexed
      * before. Right now we blankly tell Algolia to try to delete any deleted record
      * in any index we have.
      */
+
     const { deleted = [] } = body.ids
     const recordsToDelete = deleted.concat(hiddenIds)
 
@@ -115,6 +118,7 @@ const indexer = (
         typeIndexConfig.index.deleteObjects(recordsToDelete)
       }
     }
+
   }
 
   return { transform, webhookSync }
