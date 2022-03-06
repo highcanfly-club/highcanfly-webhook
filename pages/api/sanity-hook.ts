@@ -10,6 +10,7 @@ const client = sanityClient;
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
 
+
   const hook = req.query.token === undefined ? "" : req.query.token;
   if (
     req.headers["content-type"] !== "application/json" &&
@@ -19,6 +20,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     res.json({ message: "Bad request" });
     return;
   }
+
   console.log(`INCOMING_REQUEST:${JSON.stringify(req.body)}`);
   const sanityAlgolia = algoliaIndexer;
 

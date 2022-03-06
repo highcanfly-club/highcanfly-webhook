@@ -59,7 +59,7 @@ const indexer = (
   const webhookSync = async (client: SanityClient, body: WebhookBody) => {
     // Sleep a bit to make sure Sanity query engine is caught up to mutation
     // changes we are responding to.
-    await sleep(2000)
+    await sleep(1000)
 
     // Query Sanity for more information
     //

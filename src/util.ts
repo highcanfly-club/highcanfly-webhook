@@ -2,7 +2,7 @@
 import sw from 'stopword'
 import { SanityDocumentStub } from '@sanity/client'
 import { SearchIndex } from 'algoliasearch'
-import { AlgoliaRecord } from 'types'
+import { AlgoliaRecord } from './types'
 
 export const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
