@@ -19,7 +19,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     res.json({ message: "Bad request" });
     return;
   }
-  console.log(`INCOMING_REQUEST:${req.body}`);
+  console.log(`INCOMING_REQUEST:${JSON.stringify(req.body)}`);
   const sanityAlgolia = algoliaIndexer;
 
   return sanityAlgolia
