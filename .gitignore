@@ -31,3 +31,4 @@ wrangler-serve
 commit.json
 package-lock.json
 sanity-conf.json
+test-url
