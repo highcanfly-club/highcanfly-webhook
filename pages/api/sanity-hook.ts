@@ -33,7 +33,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
 
   return sanityAlgolia
     .webhookSync(client, {ids: ids})
-    .then(() => res.status(200).send("ok"));
+    .then(() => res.status(200).send(`ok, created[].length=${ids.created.length}, updated[].length=${ids.updated.length}, deleted[].length=${ids.deleted.length}, ids=${JSON.stringify(ids)}`));
 };
 
 export default handler;
