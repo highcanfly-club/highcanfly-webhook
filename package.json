@@ -1,0 +1,19 @@
+{
+  "name": "highcanfly-webhook",
+  "version": "1.0.0",
+  "description": "Webhook for syncing Sanity with Algolia",
+  "scripts": {
+    "serve": "vercel dev"
+  },
+  "author": "Ronan LE MEILLAT",
+  "license": "MIT",
+  "dependencies": {
+    "@sanity/client": "^3.2.0",
+    "@vercel/node": "^1.13.0",
+    "algoliasearch": "^4.12.2",
+    "stopword": "^2.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.2"
+  }
+}

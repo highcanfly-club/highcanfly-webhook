@@ -1,0 +1,13 @@
+{
+	"functions": {
+		"pages/api/hello-world.js": {
+			"memory": 512,
+			"maxDuration": 2
+		},
+		"pages/api/sanity-hook.js": {
+				"memory": 1024,
+				"maxDuration": 5
+			}
+	}
+}
+
