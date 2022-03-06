@@ -11,7 +11,8 @@ export interface VisiblityFunction {
 }
 
 export type WebhookBody = {
-  ids: {
+  _id?: string,
+  ids?: {
     created: string[]
     updated: string[]
     deleted: string[]

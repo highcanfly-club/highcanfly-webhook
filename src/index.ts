@@ -68,7 +68,8 @@ const indexer = (
     const query = `* [(_id in $created || _id in $updated) && _type in $types] ${indexMapProjection(
       typeIndexMap
     )}`
-    const { created = [], updated = [] } = body.ids
+
+    const { created = [], updated = [] } = body.ids;
     const docs: SanityDocumentStub[] = await client.fetch(query, {
       created,
       updated,

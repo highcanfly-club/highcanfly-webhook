@@ -11,8 +11,10 @@ const algoliaIndex = algolia.initIndex("highcanfly-index");
 
 const algoliaIndexer = indexer(
   {
-    post: {index: algoliaIndex},
-    club: {index: algoliaIndex},
+    post: {
+      index: algoliaIndex,
+    },
+    club: { index: algoliaIndex },
   },
 
   (document: SanityDocumentStub) => {
@@ -40,7 +42,7 @@ const algoliaIndexer = indexer(
     return true;
   }
 );
-export { algoliaIndexer,algoliaIndex, algoliasearch };
+export { algoliaIndexer, algoliaIndex, algoliasearch };
 export default algoliasearch(
   process.env.ALGOLIA_APP_ID !== undefined ? process.env.ALGOLIA_APP_ID : "",
   process.env.ALGOLIA_ADMIN_KEY !== undefined
