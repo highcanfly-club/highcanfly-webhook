@@ -1,12 +1,12 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import sanityClient from "../../src/sanity";
+import { getSanityClient } from "../../src/sanity";
 import algoliaSearch from "../../src/algolia";
 import { algoliaIndexer } from "../../src/algolia";
 import { WebhookBody } from "../../src/types";
 
 
 const algolia = algoliaSearch;
-const client = sanityClient;
+
 
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
@@ -30,7 +30,19 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   }
 
   console.log(`INCOMING_REQUEST:${JSON.stringify(req.body)}`);
-  const sanityAlgolia = algoliaIndexer;
+  const datasetName = (req.query.dataset === undefined) ? '' : (typeof(req.query.dataset) === 'string') ? req.query.dataset : req.query.dataset[0];
+  if (datasetName.length === 0){
+    res.status(400)
+    res.json({ message: 'Bad dataset' })
+    return
+  }
+  const client = getSanityClient(  process.env.SANITY_PROJECT_ID,
+    datasetName,
+    process.env.SANITY_TOKEN,
+    true,
+    process.env.SANITY_API_VERSION);
+
+  const sanityAlgolia = algoliaIndexer(`highcanfly-${datasetName}-index`);
 
   return sanityAlgolia
     .webhookSync(client, _idsBody)

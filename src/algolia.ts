@@ -1,47 +1,51 @@
 import { SanityDocumentStub } from "@sanity/client";
 import indexer, { flattenBlocks } from "./index";
-import algoliasearch from "algoliasearch";
+import algoliasearch, { SearchIndex } from "algoliasearch";
 const algolia = algoliasearch(
   process.env.ALGOLIA_APP_ID !== undefined ? process.env.ALGOLIA_APP_ID : "",
   process.env.ALGOLIA_ADMIN_KEY !== undefined
     ? process.env.ALGOLIA_ADMIN_KEY
     : ""
 );
-const algoliaIndex = algolia.initIndex("highcanfly-index");
+const algoliaIndex = (indexName: string) => {
+  return algolia.initIndex(indexName);
+};
 
-const algoliaIndexer = indexer(
-  {
-    post: {
-      index: algoliaIndex,
+const algoliaIndexer = (indexName: string) => {
+  return indexer(
+    {
+      post: {
+        index: algoliaIndex(indexName),
+      },
+      club: { index: algoliaIndex(indexName) },
     },
-    club: { index: algoliaIndex },
-  },
 
-  (document: SanityDocumentStub) => {
-    switch (document._type) {
-      case "post":
-        return {
-          title: document.title,
-          slug: document.slug.current,
-          body: flattenBlocks(document.body),
-        };
-      case "club":
-        return {
-          title: document.name,
-          body: document.web,
-        };
-      default:
-        throw new Error("You didnt handle a type you declared interest in");
-    }
-  },
+    (document: SanityDocumentStub) => {
+      switch (document._type) {
+        case "post":
+          return {
+            title: document.title,
+            slug: document.slug.current,
+            body: flattenBlocks(document.body),
+          };
+        case "club":
+          return {
+            title: document.name,
+            body: document.web,
+          };
+        default:
+          throw new Error("You didnt handle a type you declared interest in");
+      }
+    },
 
-  (document: SanityDocumentStub) => {
-    if (document.hasOwnProperty("isHidden")) {
-      return !document.isHidden;
+    (document: SanityDocumentStub) => {
+      if (document.hasOwnProperty("isHidden")) {
+        return !document.isHidden;
+      }
+      return true;
     }
-    return true;
-  }
-);
+  );
+};
 export { algoliaIndexer, algoliaIndex, algoliasearch };
 export default algoliasearch(
   process.env.ALGOLIA_APP_ID !== undefined ? process.env.ALGOLIA_APP_ID : "",
