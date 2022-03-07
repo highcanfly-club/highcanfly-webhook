@@ -2,6 +2,7 @@ import { VercelRequest, VercelResponse } from "@vercel/node";
 import sanityClient from "../../src/sanity";
 import algoliaSearch from "../../src/algolia";
 import { algoliaIndexer } from "../../src/algolia";
+import { WebhookBody } from "../../src/types";
 
 
 const algolia = algoliaSearch;
@@ -21,16 +22,18 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     return;
   }
   //compatibility between v1 and v2 webhook
-  let _ids = [];
+  let  _idsBody: WebhookBody = { ids: { created: [], updated: [], deleted: [] }};
   if (req.body.ids === undefined){
-      _ids.push(req.body._id);
+    _idsBody.ids.created.push(req.body._id);
+  }else{
+    _idsBody = req.body;
   }
 
   console.log(`INCOMING_REQUEST:${JSON.stringify(req.body)}`);
   const sanityAlgolia = algoliaIndexer;
 
   return sanityAlgolia
-    .webhookSync(client, (req.body.ids === undefined) ? { ids: { created: _ids, updated: [], deleted: [] }} : req.body)
+    .webhookSync(client, _idsBody)
     .then(() => res.status(200).send(`ok`));
 };
 
