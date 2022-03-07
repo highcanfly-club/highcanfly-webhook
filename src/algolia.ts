@@ -22,7 +22,7 @@ const algoliaIndexer = indexer(
       case "post":
         return {
           title: document.title,
-          path: document.slug.current,
+          slug: document.slug.current,
           body: flattenBlocks(document.body),
         };
       case "club":

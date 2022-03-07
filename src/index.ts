@@ -75,7 +75,7 @@ const indexer = (
       updated,
       types: Object.keys(typeIndexMap),
     })
-
+    console.log(`We have ${created.length} created and ${updated.length} updated documents at Sanity.io`);
     // In the event that a field on a document was updated such that it is no
     // longer visible (visible set to false, published set to false etc) we need
     // to make sure these are removed if they have been indexed previously. We do
@@ -98,7 +98,7 @@ const indexer = (
         await typeIndexMap[type].index.saveObjects(
           recordsToSave.filter((r) => r.type === type)
         ).then(({ objectIDs }) => {
-          console.log(objectIDs);
+          console.log(`saved/updated (${objectIDs.length}): [${objectIDs}] of type ${type}`);
         });
       }
     }
@@ -115,7 +115,9 @@ const indexer = (
 
     if (recordsToDelete.length > 0) {
       for await (const typeIndexConfig of Object.values(typeIndexMap)) {
-        typeIndexConfig.index.deleteObjects(recordsToDelete)
+        typeIndexConfig.index.deleteObjects(recordsToDelete).then(({ objectIDs }) => {
+          console.log(`deleted (${objectIDs.length}): [${objectIDs}]`);
+        });
       }
     }
 

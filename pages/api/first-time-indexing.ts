@@ -12,8 +12,8 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     const client = sanityClient;
     
     // Fetch the _id of all the documents we want to index
-    const types = ["post","club","author","clubtype"];
-    const query = `* [_type in ["post","club","author","clubtype"] && !(_id in path("drafts.**"))][]._id`
+    const types = ["post","club"];
+    const query = `* [_type in ["post","club"] && !(_id in path("drafts.**"))][]._id`
     const sanityAlgolia = algoliaIndexer;
 
   //  if ((req.headers['content-type'] !== 'application/json')) {
